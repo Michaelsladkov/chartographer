@@ -21,14 +21,11 @@ public class ChartographerApplication {
 
     public static String path = "content";
 
-    public static void main(String[] args) throws InvalidContentFolderPathException, IOException, ImageNotPresentException, InvalidImageException, FragmentOutOfImageException {
+    public static void main(String[] args) {
         if (args.length > 0) {
             path = args[0];
         }
-        //SpringApplication.run(ChartographerApplication.class, args);
-        BMPFileManagerService fileManagerService = new BMPFileManagerServiceImpl();
-        ImageService imageService = new ImageServiceImpl(fileManagerService);
-        imageService.setFragment(1, 90, 20, fileManagerService.getImageFromBMP(39));
+        SpringApplication.run(ChartographerApplication.class, args);
     }
 
 }
