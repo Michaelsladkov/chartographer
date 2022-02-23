@@ -54,6 +54,15 @@ public class BMPFileManagerServiceImpl implements BMPFileManagerService{
         ImageIO.write(image, "BMP", bmpFile);
     }
 
+    @Override
+    public void deleteImage(int id) throws ImageNotPresentException {
+        File bmpFile = new File(getFileName(id));
+        if (!bmpFile.exists()) {
+            throw new ImageNotPresentException();
+        }
+        bmpFile.delete();
+    }
+
     protected String getFileName(int id) {
         return pathToContentFolder + "/" + id + ".bmp";
     }
