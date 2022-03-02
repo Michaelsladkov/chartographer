@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public class ChartasController {
     @ExceptionHandler( {IOException.class, InvalidImageException.class})
     public void ioExceptionHandler(HttpServletResponse response) {
          try {
-             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "internal error has been occured");
          } catch (IOException e) {
              e.printStackTrace();
          }
@@ -39,7 +40,7 @@ public class ChartasController {
     @ExceptionHandler( {ImageNotPresentException.class})
     public void imageNotPresentExceptionHandler(HttpServletResponse response) {
         try {
-            response.sendError(404);
+            response.sendError(404, "image not present");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,6 +63,14 @@ public class ChartasController {
         return ResponseEntity.status(HttpStatus.OK).body(imageService.createImage(width, height));
     }
 
+    @PostMapping (value = "/{id}/")
+    public void uploadFragment(@PathVariable int id, @RequestParam int x, @RequestParam int y,
+                               @RequestParam int width, @RequestParam int height, @RequestBody byte[] img) throws IOException, ImageNotPresentException, FragmentOutOfImageException, InvalidImageException {
+        ByteArrayInputStream stream = new ByteArrayInputStream(img);
+        BufferedImage fragment = ImageIO.read(stream);
+        imageService.setFragment(id, x, y, fragment);
+    }
+
     @GetMapping(value = "/{id}/", produces = "image/bmp")
     public @ResponseBody byte[] getFragment(@PathVariable int id, @RequestParam int x, @RequestParam int y,
                                             @RequestParam int width, @RequestParam int height)
@@ -72,4 +81,8 @@ public class ChartasController {
         return outputStream.toByteArray();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public void deleteImage (@PathVariable int id) throws ImageNotPresentException {
+        imageService.deleteImage(id);
+    }
 }

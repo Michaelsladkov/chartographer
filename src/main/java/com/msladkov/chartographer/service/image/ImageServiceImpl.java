@@ -57,7 +57,7 @@ public class ImageServiceImpl implements ImageService {
         fragment = fragment.getSubimage(0, 0,
                 Math.min(image.getWidth() - x, fragment.getWidth()),
                 Math.min(image.getHeight() - y, fragment.getHeight()));
-        int scansize = fragment.getHeight() * fragment.getHeight();
+        int scansize = fragment.getWidth();
         image.setRGB(x, y, fragment.getWidth(), fragment.getHeight(),
                 fragment.getRGB(0, 0, fragment.getWidth(), fragment.getHeight(), null, 0,
                         scansize), 0, scansize);
