@@ -68,7 +68,7 @@ public class ChartasController {
                                @RequestParam int width, @RequestParam int height, @RequestBody byte[] img) throws IOException, ImageNotPresentException, FragmentOutOfImageException, InvalidImageException {
         ByteArrayInputStream stream = new ByteArrayInputStream(img);
         BufferedImage fragment = ImageIO.read(stream);
-        imageService.setFragment(id, x, y, fragment);
+        imageService.setFragment(id, x, y, width, height, fragment);
     }
 
     @GetMapping(value = "/{id}/", produces = "image/bmp")

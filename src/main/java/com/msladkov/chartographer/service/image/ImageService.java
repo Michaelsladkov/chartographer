@@ -11,5 +11,5 @@ public interface ImageService {
     BufferedImage getFragment(int id, int x, int y, int width, int height) throws ImageNotPresentException, InvalidImageException, FragmentOutOfImageException;
     int createImage(int width, int height) throws IOException;
     void deleteImage(int id) throws ImageNotPresentException;
-    void setFragment(int id, int x, int y, BufferedImage fragment) throws InvalidImageException, ImageNotPresentException, FragmentOutOfImageException, IOException;
+    void setFragment(int id, int x, int y, int width, int height, BufferedImage fragment) throws InvalidImageException, ImageNotPresentException, FragmentOutOfImageException, IOException;
 }

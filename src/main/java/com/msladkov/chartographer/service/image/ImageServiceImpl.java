@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
         BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         width = Math.min(width, image.getWidth() - x);
         height = Math.min(height, image.getHeight() - y);
-        int scansize = width * height;
+        int scansize = width;
         ret.setRGB(0, 0, width, height,
                 image.getRGB(x, y, width, height, null, 0, scansize),0, scansize);
         return ret;
@@ -48,15 +48,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void setFragment(int id, int x, int y, BufferedImage fragment)
+    public void setFragment(int id, int x, int y, int width, int height, BufferedImage fragment)
             throws InvalidImageException, ImageNotPresentException, FragmentOutOfImageException, IOException {
         BufferedImage image = fileManagerService.getImageFromBMP(id);
         if (x > image.getWidth() || y > image.getHeight()) {
             throw new FragmentOutOfImageException();
         }
         fragment = fragment.getSubimage(0, 0,
-                Math.min(image.getWidth() - x, fragment.getWidth()),
-                Math.min(image.getHeight() - y, fragment.getHeight()));
+                Math.min(image.getWidth() - x, width),
+                Math.min(image.getHeight() - y, height));
         int scansize = fragment.getWidth();
         image.setRGB(x, y, fragment.getWidth(), fragment.getHeight(),
                 fragment.getRGB(0, 0, fragment.getWidth(), fragment.getHeight(), null, 0,
