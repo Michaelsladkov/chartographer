@@ -1,7 +1,10 @@
 package com.msladkov.chartographer;
 
+/**
+ * Singleton to keep path parameter between services and main class
+ */
 public class PathKeeper {
-    private String path;
+    private final String path;
 
     private static PathKeeper instance = null;
 

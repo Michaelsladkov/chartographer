@@ -15,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class to work with BMP files: to obtain BufferedImage objects from files, save these object to files, delete files etc.
+ */
 @Service
 public class BMPFileManagerServiceImpl implements FileManagerService {
 
@@ -70,6 +73,11 @@ public class BMPFileManagerServiceImpl implements FileManagerService {
         if (!bmpFile.delete()) throw new IOException("failed to delete image");
     }
 
+    /**
+     * Method to build file name from id
+     * @param id image's id
+     * @return file name
+     */
     protected String getFileName(int id) {
         return pathToContentFolder + "/" + id + ".bmp";
     }

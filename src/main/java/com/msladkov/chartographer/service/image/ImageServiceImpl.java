@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Implementation of image service
+ */
 @Service
 public class ImageServiceImpl implements ImageService {
     private final FileManagerService fileManagerService;
@@ -64,6 +67,15 @@ public class ImageServiceImpl implements ImageService {
         fileManagerService.saveImage(id, image);
     }
 
+    /**
+     * Method for checking is starting point out of image or not and width and heights are positive
+     * @param image image to check
+     * @param x x-coordinate of point to check
+     * @param y y-coordinate of point to check
+     * @param width width to check
+     * @param height height to check
+     * @return true if parameters are valid, false otherways
+     */
     protected boolean checkRequestParameters(BufferedImage image, int x, int y, int width, int height) {
         if (width < 0 || height < 0) return false;
         if (x < 0 || y < 0) return false;
