@@ -1,5 +1,6 @@
 package com.msladkov.chartographer.service.image;
 
+import com.msladkov.chartographer.PathKeeper;
 import com.msladkov.chartographer.service.image.exceptions.ImageNotPresentException;
 import com.msladkov.chartographer.service.image.exceptions.InvalidContentFolderPathException;
 import com.msladkov.chartographer.service.image.exceptions.InvalidImageException;
@@ -15,15 +16,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BMPFileManagerServiceImpl implements BMPFileManagerService{
-    private String pathToContentFolder = "content";
+public class BMPFileManagerServiceImpl implements FileManagerService {
 
     private final List<File> names;
 
+    private final String pathToContentFolder;
+
     public BMPFileManagerServiceImpl() throws InvalidContentFolderPathException {
+        pathToContentFolder = PathKeeper.getInstance().getPath();
         File contentFolder = new File(pathToContentFolder);
-        if (!contentFolder.isDirectory() || !contentFolder.canRead() || !contentFolder.canWrite()) {
-            throw new InvalidContentFolderPathException();
+        if(contentFolder.exists()) {
+            if (!contentFolder.isDirectory() || !contentFolder.canRead() || !contentFolder.canWrite()) {
+                throw new InvalidContentFolderPathException();
+            }
+        } else {
+            if (!contentFolder.mkdirs()) throw new InvalidContentFolderPathException();
         }
         File[] bmpFiles = contentFolder.listFiles(f -> f.getName().endsWith(".bmp"));
         if (bmpFiles == null) {
@@ -33,7 +40,7 @@ public class BMPFileManagerServiceImpl implements BMPFileManagerService{
     }
 
     @Override
-    public BufferedImage getImageFromBMP(int id) throws ImageNotPresentException, InvalidImageException {
+    public BufferedImage getImageFromFile(int id) throws ImageNotPresentException, InvalidImageException {
         File bmpFile = new File(getFileName(id));
         if (!bmpFile.exists() || !bmpFile.isFile() || !bmpFile.canRead() || !bmpFile.canWrite()) {
             throw new ImageNotPresentException();
@@ -55,21 +62,16 @@ public class BMPFileManagerServiceImpl implements BMPFileManagerService{
     }
 
     @Override
-    public void deleteImage(int id) throws ImageNotPresentException {
+    public void deleteImage(int id) throws ImageNotPresentException, IOException {
         File bmpFile = new File(getFileName(id));
         if (!bmpFile.exists()) {
             throw new ImageNotPresentException();
         }
-        bmpFile.delete();
+        if (!bmpFile.delete()) throw new IOException("failed to delete image");
     }
 
     protected String getFileName(int id) {
         return pathToContentFolder + "/" + id + ".bmp";
-    }
-
-    public void setPathToContentFolder(String newPath) {
-        pathToContentFolder = newPath;
-        System.err.println(newPath);
     }
 
     @Override

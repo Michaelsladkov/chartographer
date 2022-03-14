@@ -10,6 +10,6 @@ import java.io.IOException;
 public interface ImageService {
     BufferedImage getFragment(int id, int x, int y, int width, int height) throws ImageNotPresentException, InvalidImageException, FragmentOutOfImageException;
     int createImage(int width, int height) throws IOException;
-    void deleteImage(int id) throws ImageNotPresentException;
+    void deleteImage(int id) throws ImageNotPresentException, IOException;
     void setFragment(int id, int x, int y, int width, int height, BufferedImage fragment) throws InvalidImageException, ImageNotPresentException, FragmentOutOfImageException, IOException;
 }

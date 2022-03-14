@@ -51,7 +51,7 @@ public class ChartasController {
         if (width <= 0 || height <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Width and height should be positive");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(imageService.createImage(width, height));
+        return ResponseEntity.status(HttpStatus.CREATED).body(imageService.createImage(width, height));
     }
 
     @PostMapping (value = "/{id}/")
@@ -74,7 +74,7 @@ public class ChartasController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteImage (@PathVariable int id) throws ImageNotPresentException {
+    public void deleteImage (@PathVariable int id) throws ImageNotPresentException, IOException {
         imageService.deleteImage(id);
     }
 }

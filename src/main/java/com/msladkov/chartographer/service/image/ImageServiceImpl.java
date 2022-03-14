@@ -11,10 +11,10 @@ import java.io.IOException;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private final BMPFileManagerService fileManagerService;
+    private final FileManagerService fileManagerService;
     private int maxId;
 
-    public ImageServiceImpl (@Autowired BMPFileManagerService fileManagerService) {
+    public ImageServiceImpl (@Autowired FileManagerService fileManagerService) {
         this.fileManagerService = fileManagerService;
         maxId = fileManagerService.getIds().stream().max(Integer::compare).orElse(0);
     }
@@ -22,7 +22,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public BufferedImage getFragment(int id, int x, int y, int width, int height)
             throws ImageNotPresentException, InvalidImageException, FragmentOutOfImageException {
-        BufferedImage image = fileManagerService.getImageFromBMP(id);
+        BufferedImage image = fileManagerService.getImageFromFile(id);
         if (!checkRequestParameters(image, x, y, width, height)) {
             throw new FragmentOutOfImageException();
         }
@@ -43,14 +43,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteImage(int id) throws ImageNotPresentException {
+    public void deleteImage(int id) throws ImageNotPresentException, IOException {
         fileManagerService.deleteImage(id);
     }
 
     @Override
     public void setFragment(int id, int x, int y, int width, int height, BufferedImage fragment)
             throws InvalidImageException, ImageNotPresentException, FragmentOutOfImageException, IOException {
-        BufferedImage image = fileManagerService.getImageFromBMP(id);
+        BufferedImage image = fileManagerService.getImageFromFile(id);
         if (x > image.getWidth() || y > image.getHeight()) {
             throw new FragmentOutOfImageException();
         }
