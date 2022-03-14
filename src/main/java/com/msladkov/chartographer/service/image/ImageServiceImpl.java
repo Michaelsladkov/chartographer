@@ -68,7 +68,6 @@ public class ImageServiceImpl implements ImageService {
         if (width < 0 || height < 0) return false;
         if (x < 0 || y < 0) return false;
         if (x > image.getWidth()) return false;
-        if (y > image.getHeight()) return false;
-        return true;
+        return y <= image.getHeight();
     }
 }
