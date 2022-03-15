@@ -57,9 +57,9 @@ public class ImageServiceImpl implements ImageService {
         if (x > image.getWidth() || y > image.getHeight()) {
             throw new FragmentOutOfImageException();
         }
-        fragment = fragment.getSubimage(0, 0,
-                Math.min(image.getWidth() - x, width),
-                Math.min(image.getHeight() - y, height));
+        final int trueWidth = Math.min(fragment.getWidth() - x, width);
+        final int trueHeight = Math.min(fragment.getHeight() - y, height);
+        fragment = fragment.getSubimage(0, 0, trueWidth, trueHeight);
         int scansize = fragment.getWidth();
         image.setRGB(x, y, fragment.getWidth(), fragment.getHeight(),
                 fragment.getRGB(0, 0, fragment.getWidth(), fragment.getHeight(), null, 0,
