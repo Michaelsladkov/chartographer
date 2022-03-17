@@ -28,7 +28,7 @@ public class BMPFileManagerServiceImpl implements FileManagerService {
     public BMPFileManagerServiceImpl() throws InvalidContentFolderPathException {
         pathToContentFolder = PathKeeper.getInstance().getPath();
         File contentFolder = new File(pathToContentFolder);
-        if(contentFolder.exists()) {
+        if (contentFolder.exists()) {
             if (!contentFolder.isDirectory() || !contentFolder.canRead() || !contentFolder.canWrite()) {
                 throw new InvalidContentFolderPathException();
             }
@@ -75,6 +75,7 @@ public class BMPFileManagerServiceImpl implements FileManagerService {
 
     /**
      * Method to build file name from id
+     *
      * @param id image's id
      * @return file name
      */

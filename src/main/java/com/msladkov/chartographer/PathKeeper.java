@@ -4,9 +4,8 @@ package com.msladkov.chartographer;
  * Singleton to keep path parameter between services and main class
  */
 public class PathKeeper {
-    private final String path;
-
     private static PathKeeper instance = null;
+    private final String path;
 
     private PathKeeper(String path) {
         this.path = path;

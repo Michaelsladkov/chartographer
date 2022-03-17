@@ -27,20 +27,20 @@ public class ChartasController {
         this.imageService = imageService;
     }
 
-    @ExceptionHandler( {IOException.class, InvalidImageException.class})
+    @ExceptionHandler({IOException.class, InvalidImageException.class})
     public ResponseEntity<ChartasError> ioExceptionHandler() {
         ChartasError error = new ChartasError(HttpStatus.INTERNAL_SERVER_ERROR,
                 "internal server error has been occurred");
-         return new ResponseEntity<>(error, error.getStatus());
+        return new ResponseEntity<>(error, error.getStatus());
     }
 
-    @ExceptionHandler( {ImageNotPresentException.class})
+    @ExceptionHandler({ImageNotPresentException.class})
     public ResponseEntity<ChartasError> imageNotPresentExceptionHandler() {
         ChartasError error = new ChartasError(HttpStatus.NOT_FOUND, "Image with this id is not present");
         return new ResponseEntity<>(error, error.getStatus());
     }
 
-    @ExceptionHandler( {FragmentOutOfImageException.class})
+    @ExceptionHandler({FragmentOutOfImageException.class})
     public ResponseEntity<ChartasError> fragmentOutOfImageExceptionHandler() {
         ChartasError error = new ChartasError(HttpStatus.NOT_FOUND, "This fragment is out of image");
         return new ResponseEntity<>(error, error.getStatus());
@@ -54,7 +54,7 @@ public class ChartasController {
         return ResponseEntity.status(HttpStatus.CREATED).body(imageService.createImage(width, height));
     }
 
-    @PostMapping (value = "/{id}/")
+    @PostMapping(value = "/{id}/")
     public void uploadFragment(@PathVariable int id, @RequestParam int x, @RequestParam int y,
                                @RequestParam int width, @RequestParam int height, @RequestBody byte[] img)
             throws IOException, ImageNotPresentException, FragmentOutOfImageException, InvalidImageException {
@@ -64,8 +64,9 @@ public class ChartasController {
     }
 
     @GetMapping(value = "/{id}/", produces = "image/bmp")
-    public @ResponseBody byte[] getFragment(@PathVariable int id, @RequestParam int x, @RequestParam int y,
-                                            @RequestParam int width, @RequestParam int height)
+    public @ResponseBody
+    byte[] getFragment(@PathVariable int id, @RequestParam int x, @RequestParam int y,
+                       @RequestParam int width, @RequestParam int height)
             throws InvalidImageException, ImageNotPresentException, IOException, FragmentOutOfImageException {
         BufferedImage fragment = imageService.getFragment(id, x, y, width, height);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -74,7 +75,7 @@ public class ChartasController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteImage (@PathVariable int id) throws ImageNotPresentException, IOException {
+    public void deleteImage(@PathVariable int id) throws ImageNotPresentException, IOException {
         imageService.deleteImage(id);
     }
 }

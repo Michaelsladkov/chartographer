@@ -10,7 +10,7 @@ public class ChartasError {
     private final HttpStatus status;
     private final String message;
 
-    public ChartasError (HttpStatus status, String message) {
+    public ChartasError(HttpStatus status, String message) {
         this.message = message;
         this.status = status;
     }

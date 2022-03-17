@@ -17,7 +17,7 @@ public class ImageServiceImpl implements ImageService {
     private final FileManagerService fileManagerService;
     private int maxId;
 
-    public ImageServiceImpl (@Autowired FileManagerService fileManagerService) {
+    public ImageServiceImpl(@Autowired FileManagerService fileManagerService) {
         this.fileManagerService = fileManagerService;
         maxId = fileManagerService.getIds().stream().max(Integer::compare).orElse(0);
     }
@@ -32,9 +32,9 @@ public class ImageServiceImpl implements ImageService {
         BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         width = Math.min(width, image.getWidth() - x);
         height = Math.min(height, image.getHeight() - y);
-        int scansize = width;
+        int scanSize = width;
         ret.setRGB(0, 0, width, height,
-                image.getRGB(x, y, width, height, null, 0, scansize),0, scansize);
+                image.getRGB(x, y, width, height, null, 0, scanSize), 0, scanSize);
         return ret;
     }
 
@@ -60,19 +60,20 @@ public class ImageServiceImpl implements ImageService {
         final int trueWidth = Math.min(fragment.getWidth() - x, width);
         final int trueHeight = Math.min(fragment.getHeight() - y, height);
         fragment = fragment.getSubimage(0, 0, trueWidth, trueHeight);
-        int scansize = fragment.getWidth();
+        int scanSize = fragment.getWidth();
         image.setRGB(x, y, fragment.getWidth(), fragment.getHeight(),
                 fragment.getRGB(0, 0, fragment.getWidth(), fragment.getHeight(), null, 0,
-                        scansize), 0, scansize);
+                        scanSize), 0, scanSize);
         fileManagerService.saveImage(id, image);
     }
 
     /**
      * Method for checking is starting point out of image or not and width and heights are positive
-     * @param image image to check
-     * @param x x-coordinate of point to check
-     * @param y y-coordinate of point to check
-     * @param width width to check
+     *
+     * @param image  image to check
+     * @param x      x-coordinate of point to check
+     * @param y      y-coordinate of point to check
+     * @param width  width to check
      * @param height height to check
      * @return true if parameters are valid, false otherways
      */
