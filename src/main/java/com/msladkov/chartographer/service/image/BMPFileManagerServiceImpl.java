@@ -21,12 +21,15 @@ import java.util.stream.Collectors;
 @Service
 public class BMPFileManagerServiceImpl implements FileManagerService {
 
+    private static final String DEFAULT_PATH = "content";
+
     private final List<File> names;
 
-    private final String pathToContentFolder;
+    private String pathToContentFolder;
 
     public BMPFileManagerServiceImpl() throws InvalidContentFolderPathException {
         pathToContentFolder = PathKeeper.getInstance().getPath();
+        if (pathToContentFolder == null) pathToContentFolder = DEFAULT_PATH;
         File contentFolder = new File(pathToContentFolder);
         if (contentFolder.exists()) {
             if (!contentFolder.isDirectory() || !contentFolder.canRead() || !contentFolder.canWrite()) {
